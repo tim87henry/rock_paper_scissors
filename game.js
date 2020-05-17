@@ -17,65 +17,71 @@ function gamePlay(playerSelection,computerSelection) {
     switch(playerSelection) {
         case "rock":
             if (computerSelection==="paper") {
-                result = "You : "+capsDisplay(playerSelection)+"\nComputer : "+capsDisplay(computerSelection)+"\nPaper covers Rock. You Loose!!";
+                result = "Paper covers Rock. You Loose!!";
             } else if (computerSelection==="rock") {
-                result = "You : "+capsDisplay(playerSelection)+"\nComputer : "+capsDisplay(computerSelection)+"\nTie Game!!";
+                result = "Tie Game!!";
             } else {
-                result = "You : "+capsDisplay(playerSelection)+"\nComputer : "+capsDisplay(computerSelection)+"\nRock smashes scissors. You Win!!";
+                result = "Rock smashes scissors. You Win!!";
             }
             break;
         case "paper":
             if (computerSelection==="rock") {
-                result = "You : "+capsDisplay(playerSelection)+"\nComputer : "+capsDisplay(computerSelection)+"\nPaper covers Rock. You Win!!";
+                result = "Paper covers Rock. You Win!!";
             } else if (computerSelection==="paper") {
-                result = "You : "+capsDisplay(playerSelection)+"\nComputer : "+capsDisplay(computerSelection)+"\nTie Game!!";
+                result = "Tie Game!!";
             } else {
-                result = "You : "+capsDisplay(playerSelection)+"\nComputer : "+capsDisplay(computerSelection)+"\nScissors cuts paper. You Loose!!";
+                result = "Scissors cuts paper. You Loose!!";
             }
             break;
         case "scissors":
             if (computerSelection==="paper") {
-                result = "You : "+capsDisplay(playerSelection)+"\nComputer : "+capsDisplay(computerSelection)+"\nScissors cuts paper. You Win!!";
+                result = "Scissors cuts paper. You Win!!";
             } else if (computerSelection==="scissors") {
-                result = "You : "+capsDisplay(playerSelection)+"\nComputer : "+capsDisplay(computerSelection)+"\nTie Game!!";
+                result = "Tie Game!!";
             } else {
-                result = "You : "+capsDisplay(playerSelection)+"\nComputer : "+capsDisplay(computerSelection)+"\nRock smashes scissors. You Loose!!";
+                result = "Rock smashes scissors. You Loose!!";
             }
             break;
         default:
             result = "Please check your input";
     }
+    let report="Computer has chosen "+computerSelection+"<br><br>" + result;
+    report=report.concat("<br><br>");
+    if(result.search("Win") >= 0) {
+        playerPoints++;
+        report=report.concat("<br>Your Score : "+playerPoints+"<br>Computer's Score : "+computerPoints);
+    } else if (result.search("Loose") >= 0) {
+        computerPoints++;
+        report=report.concat("<br>Your Score : "+playerPoints+"<br>Computer's Score : "+computerPoints);
+    } else {
+        report=report.concat("<br>Your Score : "+playerPoints+"<br>Computer's Score : "+computerPoints);
+    }
+    computerInfo.innerHTML = report;
     return result;
-}
-
-// This function is to invoke 5 rounds and to display the final results 
-function game() {
-	for (i = 0; i < 5; i++) {
-		let choice=prompt("Choose your weapon wisely. Rock, Paper or Scissors?").toLowerCase();
-		result = gamePlay(choice,computerPlay());
-		console.log(result);
-		if(result.search("Win") >= 0) {
-			playerPoints++;
-			console.log("Your Score : "+playerPoints+"\tComputer's Score : "+computerPoints);
-		} else if (result.search("Loose") >= 0) {
-			computerPoints++;
-			console.log("Your Score : "+playerPoints+"\tComputer's Score : "+computerPoints);
-		} else {
-			console.log("Your Score : "+playerPoints+"\tComputer's Score : "+computerPoints);
-		}
-	}
-	if (playerPoints >  computerPoints) {
-		console.log("You're the champ!!");
-	} else if (playerPoints <  computerPoints) {
-		console.log("Haha.. What a Loser!!");
-	} else {
-		console.log("Even Stevens!!");
-	}
 }
 
 
 // Main program starts here
 let playerPoints = 0;
 let computerPoints = 0;
-alert("Please open your browser's console to play the game.")
-game();
+
+const btnRock = document.querySelector('#rock');
+const btnPaper = document.querySelector('#paper');
+const btnScissors = document.querySelector('#scissors');
+const userInfo = document.querySelector('#userInfo');
+const computerInfo = document.querySelector('#computerInfo');
+
+btnRock.addEventListener('click', function (e) {
+    userInfo.textContent = "You have chosen Rock";
+    gamePlay("rock",computerPlay());
+});
+
+btnPaper.addEventListener('click', function (e) {
+    userInfo.textContent = "You have chosen Paper";
+    gamePlay("paper",computerPlay());
+});
+
+btnScissors.addEventListener('click', function (e) {
+    userInfo.textContent = "You have chosen Scissors";
+    gamePlay("scissors",computerPlay());
+});
