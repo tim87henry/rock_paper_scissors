@@ -56,14 +56,47 @@ function gamePlay(playerSelection,computerSelection) {
     } else {
         report=report.concat("<br>Your Score : "+playerPoints+"<br>Computer's Score : "+computerPoints);
     }
+    if(playerPoints === 5) {
+        report=report.concat("<br><br>Congratulations. You won the battle.<br><br>");
+    } else if (computerPoints === 5) {
+        report=report.concat("<br><br>Sorry, you lost this battle. But the war isn't over.<br><br>");
+    }
     computerInfo.innerHTML = report;
+    if(playerPoints === 5 || computerPoints === 5) {
+        endGame();      
+    }
     return result;
 }
 
+function endGame () {
+    playerPoints = 0;
+    computerPoints = 0;
+    activeGame = false;
+    const restartBtn = document.createElement('button');
+    restartBtn.setAttribute('id','restartGame');
+    restartBtn.textContent = "Restart Game";
+    restartBtn.style.backgroundColor = 'darkgreen';
+    restartBtn.style.color = 'white';
+    restartBtn.style.border = 0;
+    restartBtn.style.height = '40px';
+    restartBtn.style.textAlign = 'center';
+    restartBtn.style.cursor = 'pointer';
+    restartBtn.style.paddingLeft = '20px';
+    restartBtn.style.paddingRight = '20px';
+    restartBtn.style.fontSize = '16px';
+    computerInfo.appendChild(restartBtn);
+    
+    restartBtn.addEventListener('click', function (e) {
+        activeGame = true;
+        userInfo.textContent = "";
+        computerInfo.textContent = "";
+    });
+}
 
 // Main program starts here
 let playerPoints = 0;
 let computerPoints = 0;
+let activeGame = true;
 
 const btnRock = document.querySelector('#rock');
 const btnPaper = document.querySelector('#paper');
@@ -72,16 +105,22 @@ const userInfo = document.querySelector('#userInfo');
 const computerInfo = document.querySelector('#computerInfo');
 
 btnRock.addEventListener('click', function (e) {
-    userInfo.textContent = "You have chosen Rock";
-    gamePlay("rock",computerPlay());
+    if (activeGame) {
+        userInfo.textContent = "You have chosen Rock";
+        gamePlay("rock",computerPlay());
+    }
 });
 
 btnPaper.addEventListener('click', function (e) {
-    userInfo.textContent = "You have chosen Paper";
-    gamePlay("paper",computerPlay());
+    if (activeGame) {
+        userInfo.textContent = "You have chosen Paper";
+        gamePlay("paper",computerPlay());
+    }
 });
 
 btnScissors.addEventListener('click', function (e) {
-    userInfo.textContent = "You have chosen Scissors";
-    gamePlay("scissors",computerPlay());
+    if (activeGame) {
+        userInfo.textContent = "You have chosen Scissors";
+        gamePlay("scissors",computerPlay());
+    }
 });
